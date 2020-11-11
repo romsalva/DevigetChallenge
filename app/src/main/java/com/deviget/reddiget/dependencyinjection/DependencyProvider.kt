@@ -1,6 +1,7 @@
 package com.deviget.reddiget.dependencyinjection
 
 import com.deviget.reddiget.data.repository.PostsRepository
+import com.deviget.reddiget.data.webservice.RedditWebservice
 import com.deviget.reddiget.presentation.viewmodel.PostsViewModel
 
 /**
@@ -9,5 +10,6 @@ import com.deviget.reddiget.presentation.viewmodel.PostsViewModel
  */
 object DependencyProvider {
     fun postsViewModel() = PostsViewModel(postsRepository())
-    fun postsRepository() = PostsRepository()
+    fun postsRepository() = PostsRepository(redditWebservice())
+    fun redditWebservice() = RedditWebservice()
 }
