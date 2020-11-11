@@ -17,7 +17,7 @@ class ReddigetActivity : AppCompatActivity() {
         views = Views(this)
         setSupportActionBar(views.toolbar)
         supportFragmentManager.commit {
-            add(R.id.fragment_container, PostsFragment())
+            replace(R.id.fragment_container, PostsFragment())
         }
     }
 
