@@ -16,8 +16,11 @@ class ReddigetActivity : AppCompatActivity() {
         setContentView(R.layout.activity_reddiget)
         views = Views(this)
         setSupportActionBar(views.toolbar)
-        supportFragmentManager.commit {
-            replace(R.id.fragment_container, PostsFragment())
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                add(R.id.fragment_container, PostsFragment())
+                addToBackStack(null)
+            }
         }
     }
 

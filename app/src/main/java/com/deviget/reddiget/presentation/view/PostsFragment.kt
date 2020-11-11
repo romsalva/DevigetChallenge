@@ -49,7 +49,9 @@ class PostsFragment : Fragment() {
             views.swipeRefresh.isRefreshing = refreshing ?: false
         }
 
-        viewModel.refresh()
+        if (savedInstanceState == null) {
+            viewModel.refresh()
+        }
     }
 
     private class Views(
