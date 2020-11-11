@@ -1,4 +1,6 @@
- import java.util.*
+import java.util.*
+
+private const val MILLISECONDS_IN_A_SECOND = 1000
 
 fun calendar(block: Calendar.() -> Unit = {}): Calendar =
     Calendar.getInstance().apply(block)
@@ -57,6 +59,11 @@ var Calendar.zoneOffset: Int
 var Calendar.dstOffset: Int
     get() = get(Calendar.DST_OFFSET)
     set(value) = set(Calendar.DST_OFFSET, value)
+var Calendar.timeInSeconds: Long
+    get() = timeInMillis / MILLISECONDS_IN_A_SECOND
+    set(value) {
+        timeInMillis = value * MILLISECONDS_IN_A_SECOND
+    }
 
 fun todayAtMidnight() = calendar {
     hourOfDay = 0

@@ -7,15 +7,18 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+/**
+ * This interface should be the simplest possible representation of the endpoint.
+ */
 interface RedditService {
 
     @GET("/top")
     suspend fun top(
-        @Query("after") after: String,
-        @Query("before") before: String,
-        @Query("limit") limit: Int,
-        @Query("count") count: Int,
-        @Query("show") show: String
+        @Query("after") after: String? = null,
+        @Query("before") before: String? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("count") count: Int? = null,
+        @Query("show") show: String? = null
     ): Response<JsonThing<JsonListing<JsonLink>>>
 
 }

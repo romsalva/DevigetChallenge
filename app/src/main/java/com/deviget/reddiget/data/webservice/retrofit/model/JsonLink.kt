@@ -24,5 +24,5 @@ data class JsonLink(
     @SerializedName("url")
     val url: String,
     @SerializedName("selftext_html")
-    val selfTextHtml: String
+    val selfTextHtml: String?
 )

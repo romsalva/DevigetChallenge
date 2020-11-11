@@ -30,7 +30,7 @@ class PostsAdapter(
         holder.dateText.text = item.date.format()
         holder.commentCountText.text = "${item.commentCount} comments"
         holder.readStatusText.text = if (item.read) "Read" else "Unread"
-        item.imageUrl?.let { uri ->
+        item.thumbnail?.let { uri ->
             Glide.with(holder.itemView).load(uri).into(holder.image)
         }
     }

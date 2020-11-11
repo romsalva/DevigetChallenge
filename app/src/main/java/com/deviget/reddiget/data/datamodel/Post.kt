@@ -8,10 +8,10 @@ data class Post(
     val title: String,
     val author: String,
     val date: Date,
+    val thumbnail: Uri?,
     val commentCount: Int,
     val read: Boolean,
     val hidden: Boolean,
     val text: String?,
-    val link: Uri?,
-    val imageUrl: Uri?
+    val link: Uri?
 )
