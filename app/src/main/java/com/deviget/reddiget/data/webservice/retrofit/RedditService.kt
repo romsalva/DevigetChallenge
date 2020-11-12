@@ -21,10 +21,4 @@ interface RedditService {
         @Query("show") show: String? = null
     ): Response<JsonThing<JsonListing<JsonLink>>>
 
-    //TODO: Implementation
-    @GET("")
-    suspend fun postByFullName(
-        fullName: String
-    ): Response<JsonLink>
-
 }

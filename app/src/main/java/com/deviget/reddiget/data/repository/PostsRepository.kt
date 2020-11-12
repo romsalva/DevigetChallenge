@@ -35,14 +35,7 @@ class PostsRepository(
 
     fun postById(id: String): LiveData<Resource<Post>> = liveData {
         emit(Resource.Loading())
-        val result = webservice.postByFullName(KIND_PREFIX_T3 + id)
-        emit(
-            when (result) {
-                is DataResult.Success -> {
-                    Resource.Success(result.data)
-                }
-                is DataResult.Failure -> Resource.Error(result.throwable)
-            }
-        )
+        latest.orEmpty().find { it.id == id }
+        emit(Resource.Success(latest.orEmpty().find { it.id == id }))
     }
 }
