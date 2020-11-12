@@ -40,4 +40,30 @@ class RedditWebservice(private val redditService: RedditService) {
                 }
             }
         }
+
+    suspend fun postByFullName(fullName: String): DataResult<Post> =
+        retrofitRequest {
+            redditService.postByFullName(fullName)
+        }.map { link ->
+            with(link) {
+                Post(
+                    id = id,
+                    title = title,
+                    author = author,
+                    date = calendar { timeInSeconds = createdUtc }.time,
+                    commentCount = numComments,
+                    thumbnail = when (thumbnail) {
+                        "self" -> null
+                        "image" -> null
+                        "default" -> null
+                        else -> thumbnail.asUri()
+                    },
+                    read = false,
+                    hidden = false,
+                    text = selfTextHtml,
+                    link = url.asUri()
+                )
+            }
+        }
+
 }

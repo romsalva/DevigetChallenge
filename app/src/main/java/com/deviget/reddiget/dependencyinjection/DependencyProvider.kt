@@ -4,6 +4,7 @@ import com.deviget.reddiget.Configuration
 import com.deviget.reddiget.data.repository.PostsRepository
 import com.deviget.reddiget.data.webservice.RedditWebservice
 import com.deviget.reddiget.data.webservice.retrofit.RedditService
+import com.deviget.reddiget.presentation.viewmodel.PostViewModel
 import com.deviget.reddiget.presentation.viewmodel.PostsViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,4 +26,5 @@ object DependencyProvider {
     fun redditWebservice() = RedditWebservice(retrofitService)
     fun postsRepository() = PostsRepository(redditWebservice())
     fun postsViewModel() = PostsViewModel(postsRepository())
+    fun postViewModel() = PostViewModel(postsRepository())
 }

@@ -6,6 +6,8 @@ import com.deviget.reddiget.data.DataResult
 import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.data.webservice.RedditWebservice
 
+private const val KIND_PREFIX_T3 = "t3_"
+
 /**
  * This layer acts as the single source of truth for Posts.
  * It combines local storage and network calls into a unified data stream.
@@ -24,6 +26,19 @@ class PostsRepository(
             when (result) {
                 is DataResult.Success -> {
                     latest = result.data
+                    Resource.Success(result.data)
+                }
+                is DataResult.Failure -> Resource.Error(result.throwable)
+            }
+        )
+    }
+
+    fun postById(id: String): LiveData<Resource<Post>> = liveData {
+        emit(Resource.Loading())
+        val result = webservice.postByFullName(KIND_PREFIX_T3 + id)
+        emit(
+            when (result) {
+                is DataResult.Success -> {
                     Resource.Success(result.data)
                 }
                 is DataResult.Failure -> Resource.Error(result.throwable)
