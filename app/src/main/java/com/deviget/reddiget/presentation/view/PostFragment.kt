@@ -37,10 +37,10 @@ class PostFragment : Fragment() {
             if (post != null) {
                 views.apply {
                     titleText.text = post.title
-                    post.thumbnail?.let { uri ->
+                    post.link?.let { uri ->
                         Glide.with(view.context).load(uri).into(image)
                     }
-                    image.isVisible = post.thumbnail != null
+                    image.isVisible = post.link != null
                     authorText.text = post.author
                     dateText.text = post.formattedDate()
                     commentCountText.text = "${post.commentCount} comments"
