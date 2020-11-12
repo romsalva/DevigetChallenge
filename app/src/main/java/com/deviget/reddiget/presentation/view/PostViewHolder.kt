@@ -9,6 +9,7 @@ import com.deviget.reddiget.R
 
 class PostViewHolder(
     itemView: View,
+    private val onClick: (position: Int) -> Unit,
     private val onDismiss: (position: Int) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
     val titleText: TextView = itemView.findViewById(R.id.text_title)
@@ -20,8 +21,15 @@ class PostViewHolder(
     val dismissButton: Button = itemView.findViewById(R.id.button_dismiss)
 
     init {
+        itemView.setOnClickListener {
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                onClick(adapterPosition)
+            }
+        }
         dismissButton.setOnClickListener {
-            onDismiss(adapterPosition)
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                onDismiss(adapterPosition)
+            }
         }
     }
 }

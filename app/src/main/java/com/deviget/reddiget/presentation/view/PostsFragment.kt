@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.deviget.reddiget.R
+import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.presentation.extension.toast
 import com.deviget.reddiget.presentation.viewmodel.PostsViewModel
 import com.deviget.reddiget.presentation.viewmodel.factory.ViewModelFactory
@@ -29,9 +30,10 @@ class PostsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views = Views(view)
-        val adapter = PostsAdapter { post, position ->
-            toast("Post with id '${post.id}' at position $position dismissed")
-        }
+        val adapter = PostsAdapter(
+            onPostClicked = { post, _ -> clickPost(post) },
+            onPostDismissed = { post, _ -> dismissPost(post) }
+        )
         val viewModel by viewModels<PostsViewModel> { ViewModelFactory() }
 
         views.list.adapter = adapter
@@ -52,6 +54,14 @@ class PostsFragment : Fragment() {
         if (savedInstanceState == null) {
             viewModel.refresh()
         }
+    }
+
+    private fun clickPost(post: Post) {
+        toast("Post with id '${post.id}' clicked")
+    }
+
+    private fun dismissPost(post: Post) {
+        toast("Post with id '${post.id}' dismissed")
     }
 
     private class Views(
