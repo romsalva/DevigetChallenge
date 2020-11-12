@@ -10,7 +10,7 @@ import com.deviget.reddiget.presentation.viewmodel.PostsViewModel
 class ViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = when (modelClass) {
         PostsViewModel::class.java -> DependencyProvider.postsViewModel()
-        PostViewModel::class.java -> DependencyProvider.postsViewModel()
+        PostViewModel::class.java -> DependencyProvider.postViewModel()
         else -> throw IllegalArgumentException("${modelClass.name} not supported")
     } as T
 }

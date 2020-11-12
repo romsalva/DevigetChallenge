@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.commit
 import com.deviget.reddiget.R
 
 class ReddigetActivity : AppCompatActivity() {
@@ -16,12 +15,6 @@ class ReddigetActivity : AppCompatActivity() {
         setContentView(R.layout.activity_reddiget)
         views = Views(this)
         setSupportActionBar(views.toolbar)
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                add(R.id.fragment_container, PostsFragment())
-                addToBackStack(null)
-            }
-        }
     }
 
     private class Views(

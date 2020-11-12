@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.deviget.reddiget.R
 import com.deviget.reddiget.presentation.extension.toast
@@ -32,11 +33,10 @@ class PostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         views = Views(view)
         val viewModel by viewModels<PostViewModel> { ViewModelFactory() }
-
         viewModel.post.observe(viewLifecycleOwner) { post ->
             if (post != null) {
                 views.apply {
-                    titleText.text = post.text
+                    titleText.text = post.title
                     post.thumbnail?.let { uri ->
                         Glide.with(view.context).load(uri).into(image)
                     }
@@ -54,7 +54,8 @@ class PostFragment : Fragment() {
             }
         }
         if (savedInstanceState == null) {
-            viewModel.setId(arguments?.getString(PARAMETER_ID).orEmpty())
+            val args by navArgs<PostFragmentArgs>()
+            viewModel.setId(args.postId)
         }
     }
 
@@ -76,10 +77,6 @@ class PostFragment : Fragment() {
             view.findViewById(R.id.text_read_status),
             view.findViewById(R.id.button_dismiss),
         )
-    }
-
-    companion object {
-        const val PARAMETER_ID = "id"
     }
 
 }

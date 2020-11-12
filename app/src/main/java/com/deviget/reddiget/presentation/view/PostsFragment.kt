@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,6 +19,7 @@ import com.deviget.reddiget.presentation.viewmodel.factory.ViewModelFactory
 class PostsFragment : Fragment() {
 
     private lateinit var views: Views
+    private val navController by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +59,8 @@ class PostsFragment : Fragment() {
     }
 
     private fun clickPost(post: Post) {
-        toast("Post with id '${post.id}' clicked")
+        val action = PostsFragmentDirections.actionPostsFragmentToPostFragment(post.id)
+        navController.navigate(action)
     }
 
     private fun dismissPost(post: Post) {

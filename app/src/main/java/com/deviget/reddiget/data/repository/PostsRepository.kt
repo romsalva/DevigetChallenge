@@ -6,7 +6,8 @@ import com.deviget.reddiget.data.DataResult
 import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.data.webservice.RedditWebservice
 
-private const val KIND_PREFIX_T3 = "t3_"
+private var latest: List<Post>? = null
+//TODO: replace this with actual persistences
 
 /**
  * This layer acts as the single source of truth for Posts.
@@ -15,9 +16,6 @@ private const val KIND_PREFIX_T3 = "t3_"
 class PostsRepository(
     private val webservice: RedditWebservice
 ) {
-
-    //TODO: replace this with actual persistences
-    private var latest: List<Post>? = null
 
     fun topPosts(): LiveData<Resource<List<Post>>> = liveData {
         emit(Resource.Loading(latest))

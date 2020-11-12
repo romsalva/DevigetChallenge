@@ -25,7 +25,7 @@ class PostsAdapter(
     //TODO: hardcoded strings will be fixed when the final UI is implemented
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val item = posts[position]
-        holder.titleText.text = item.text
+        holder.titleText.text = item.title
         holder.authorText.text = item.author
         holder.dateText.text = item.formattedDate()
         holder.commentCountText.text = "${item.commentCount} comments"
