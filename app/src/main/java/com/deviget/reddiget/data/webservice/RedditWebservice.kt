@@ -17,9 +17,13 @@ class RedditWebservice @Inject constructor(
     private val redditService: RedditService
 ) {
 
-    suspend fun top(): DataResult<List<Post>> =
+    suspend fun top(fullName: String? = null, count: Int? = null, limit: Int? = null): DataResult<List<Post>> =
         retrofitRequest {
-            redditService.top()
+            redditService.top(
+                after = fullName,
+                limit = limit,
+                count = count
+            )
         }.map { listing ->
             listing.data.children.map { thing ->
                 with(thing.data) {

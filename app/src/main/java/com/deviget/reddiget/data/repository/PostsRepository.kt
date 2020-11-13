@@ -1,14 +1,20 @@
 package com.deviget.reddiget.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.map
+import androidx.lifecycle.*
+import androidx.paging.toLiveData
+import com.deviget.reddiget.Configuration
 import com.deviget.reddiget.data.DataResult
 import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.data.room.dao.PostsDao
 import com.deviget.reddiget.data.webservice.RedditWebservice
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
+
+private const val PREFIX_T3 = "t3_"
 
 /**
  * This layer acts as the single source of truth for Posts.
@@ -19,20 +25,69 @@ class PostsRepository @Inject constructor(
     private val webservice: RedditWebservice
 ) {
 
-    fun topPosts(): LiveData<Resource<List<Post>>> = liveData {
-        val allPosts = dao.allPosts()
-        emitSource(allPosts.asLiveData().map { Resource.Loading(it) })
-        when (val result = webservice.top()) {
-            is DataResult.Success -> {
-                dao.insert(result.data)
-                emitSource(allPosts.asLiveData().map { Resource.Success(it) })
+    private val scope = object : CoroutineScope {
+        val job = Job()
+        override val coroutineContext: CoroutineContext
+            get() = job + Dispatchers.Main
+    }
+
+    fun topPosts(forceRefresh: Boolean = false): PagedResource<Post> {
+        val status = MutableLiveData<PagedResource.Status>(PagedResource.Status.Idle)
+
+        fun fetch(clearDatabase: Boolean = false, request: suspend () -> DataResult<List<Post>>) {
+            status.value = PagedResource.Status.Loading
+            scope.launch {
+                when (val result = request()) {
+                    is DataResult.Success -> {
+                        status.postValue(PagedResource.Status.Idle)
+                        if (clearDatabase) {
+                            dao.deleteAllPosts()
+                        }
+                        dao.insert(result.data)
+                    }
+                    is DataResult.Failure -> status.postValue(PagedResource.Status.Error(result.throwable))
+                }
             }
-            is DataResult.Failure -> emit(Resource.Error<List<Post>>(result.throwable))
         }
+
+        val boundaryCallback = BoundaryCallback<Post>(
+            zeroItemsLoaded = {
+                fetch {
+                    webservice.top(
+                        limit = Configuration.pagingConfig.pageSize
+                    )
+                }
+            },
+            itemAtEndLoaded = { post ->
+                fetch {
+                    webservice.top(
+                        fullName = PREFIX_T3 + post.id,
+                        limit = Configuration.pagingConfig.pageSize
+                    )
+                }
+            }
+        )
+
+        if (forceRefresh) {
+            fetch(clearDatabase = true) {
+                webservice.top(
+                    limit = Configuration.pagingConfig.pageSize
+                )
+            }
+        }
+
+        return PagedResource(
+            dao.allPosts().toLiveData(
+                config = Configuration.pagingConfig,
+                boundaryCallback = boundaryCallback
+            ),
+            status
+        )
     }
 
     fun postById(id: String): LiveData<Resource<Post>> = liveData {
         val post = dao.postById(id)
         emitSource(post.asLiveData().map { Resource.Success(it) })
     }
+
 }

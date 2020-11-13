@@ -48,7 +48,7 @@ class PostsFragment : Fragment() {
 
         viewModel.posts.observe(viewLifecycleOwner) { posts ->
             //TODO: add "empty" view to fragment_posts
-            adapter.setPosts(posts.orEmpty())
+            adapter.submitList(posts)
         }
         viewModel.refreshing.observe(viewLifecycleOwner) { refreshing ->
             views.swipeRefresh.isRefreshing = refreshing ?: false
