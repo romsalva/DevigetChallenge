@@ -20,6 +20,9 @@ interface PostsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(posts: List<Post>)
 
+    @Query("UPDATE post SET read = :read WHERE id = :id")
+    suspend fun setRead(id: String, read: Boolean)
+
     @Query("DELETE FROM post")
     suspend fun deleteAllPosts()
 

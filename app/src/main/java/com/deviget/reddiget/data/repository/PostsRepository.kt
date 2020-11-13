@@ -92,4 +92,10 @@ class PostsRepository @Inject constructor(
         emitSource(dao.postById(id).asLiveData())
     }
 
+    fun setRead(id: String, read: Boolean) {
+        scope.launch {
+            dao.setRead(id, read)
+        }
+    }
+
 }

@@ -15,7 +15,11 @@ class PostViewModel @ViewModelInject constructor(
 
     private val postId = MutableLiveData<String>()
 
-    val post: LiveData<Post?> = postId.switchMap { id -> repository.postById(id) }
+    val post: LiveData<Post?> = postId.switchMap { id ->
+        repository.postById(id).also {
+            repository.setRead(id, true)
+        }
+    }
 
     @MainThread
     fun setId(id: String) {
