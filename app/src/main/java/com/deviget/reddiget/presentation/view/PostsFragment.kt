@@ -53,9 +53,6 @@ class PostsFragment : Fragment() {
             views.swipeRefresh.isRefreshing = refreshing ?: false
         }
 
-        if (savedInstanceState == null) {
-            viewModel.refresh()
-        }
     }
 
     private fun clickPost(post: Post) {

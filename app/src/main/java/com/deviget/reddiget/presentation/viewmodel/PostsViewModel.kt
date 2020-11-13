@@ -13,6 +13,10 @@ class PostsViewModel(
 
     private val resource = refreshSignal.switchMap { repository.topPosts() }
 
+    init {
+        refresh()
+    }
+
     val posts: LiveData<List<Post>> = resource.map { resource ->
         resource.data.orEmpty()
     }
