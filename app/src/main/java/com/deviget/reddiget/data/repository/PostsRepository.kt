@@ -8,12 +8,13 @@ import com.deviget.reddiget.data.DataResult
 import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.data.room.dao.PostsDao
 import com.deviget.reddiget.data.webservice.RedditWebservice
+import javax.inject.Inject
 
 /**
  * This layer acts as the single source of truth for Posts.
  * It combines local storage and network calls into a unified data stream.
  */
-class PostsRepository(
+class PostsRepository @Inject constructor(
     private val dao: PostsDao,
     private val webservice: RedditWebservice
 ) {

@@ -15,8 +15,9 @@ import com.bumptech.glide.Glide
 import com.deviget.reddiget.R
 import com.deviget.reddiget.presentation.extension.toast
 import com.deviget.reddiget.presentation.viewmodel.PostViewModel
-import com.deviget.reddiget.presentation.viewmodel.factory.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PostFragment : Fragment() {
 
     private lateinit var views: Views
@@ -32,7 +33,7 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views = Views(view)
-        val viewModel by viewModels<PostViewModel> { ViewModelFactory(view.context) }
+        val viewModel by viewModels<PostViewModel>()
         viewModel.post.observe(viewLifecycleOwner) { post ->
             if (post != null) {
                 views.apply {

@@ -1,12 +1,13 @@
 package com.deviget.reddiget.presentation.viewmodel
 
 import androidx.annotation.MainThread
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.data.repository.PostsRepository
 import com.deviget.reddiget.data.repository.Resource
 
-class PostViewModel(
+class PostViewModel @ViewModelInject constructor(
     private val repository: PostsRepository
 ) : ViewModel() {
 

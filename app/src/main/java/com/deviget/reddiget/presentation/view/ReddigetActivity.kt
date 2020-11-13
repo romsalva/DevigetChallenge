@@ -9,7 +9,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.deviget.reddiget.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ReddigetActivity : AppCompatActivity() {
 
     private lateinit var views: Views

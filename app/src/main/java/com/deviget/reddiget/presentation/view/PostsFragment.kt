@@ -14,8 +14,9 @@ import com.deviget.reddiget.R
 import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.presentation.extension.toast
 import com.deviget.reddiget.presentation.viewmodel.PostsViewModel
-import com.deviget.reddiget.presentation.viewmodel.factory.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PostsFragment : Fragment() {
 
     private lateinit var views: Views
@@ -36,7 +37,7 @@ class PostsFragment : Fragment() {
             onPostClicked = { post, _ -> clickPost(post) },
             onPostDismissed = { post, _ -> dismissPost(post) }
         )
-        val viewModel by viewModels<PostsViewModel> { ViewModelFactory(view.context) }
+        val viewModel by viewModels<PostsViewModel>()
 
         views.list.adapter = adapter
         views.list.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))

@@ -8,11 +8,14 @@ import com.deviget.reddiget.data.webservice.retrofit.RedditService
 import com.deviget.reddiget.data.webservice.retrofit.retrofitRequest
 import com.deviget.reddiget.presentation.extension.asUri
 import timeInSeconds
+import javax.inject.Inject
 
 /**
  * This layer hides any networking complexities and offers resources in the "datamodel" format.
  */
-class RedditWebservice(private val redditService: RedditService) {
+class RedditWebservice @Inject constructor(
+    private val redditService: RedditService
+) {
 
     suspend fun top(): DataResult<List<Post>> =
         retrofitRequest {
