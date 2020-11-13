@@ -80,7 +80,7 @@ class PostsRepository @Inject constructor(
         }
 
         return PagedResource(
-            dao.allPosts().toLiveData(
+            dao.allShownPosts().toLiveData(
                 config = Configuration.pagingConfig,
                 boundaryCallback = boundaryCallback
             ),
@@ -95,6 +95,12 @@ class PostsRepository @Inject constructor(
     fun setRead(id: String, read: Boolean) {
         scope.launch {
             dao.setRead(id, read)
+        }
+    }
+
+    fun setHidden(id: String, hidden: Boolean) {
+        scope.launch {
+            dao.setHidden(id, hidden)
         }
     }
 

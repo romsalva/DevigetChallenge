@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PostsDao {
 
-    @Query("SELECT * FROM post")
-    fun allPosts(): DataSource.Factory<Int, Post>
+    @Query("SELECT * FROM post WHERE hidden = 0")
+    fun allShownPosts(): DataSource.Factory<Int, Post>
 
     @Query("SELECT * FROM post WHERE id = :id")
     fun postById(id: String): Flow<Post>
@@ -22,6 +22,9 @@ interface PostsDao {
 
     @Query("UPDATE post SET read = :read WHERE id = :id")
     suspend fun setRead(id: String, read: Boolean)
+
+    @Query("UPDATE post SET hidden = :hidden WHERE id = :id")
+    suspend fun setHidden(id: String, hidden: Boolean)
 
     @Query("DELETE FROM post")
     suspend fun deleteAllPosts()

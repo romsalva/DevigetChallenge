@@ -10,10 +10,10 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.deviget.reddiget.R
-import com.deviget.reddiget.presentation.extension.toast
 import com.deviget.reddiget.presentation.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostFragment : Fragment() {
 
     private lateinit var views: Views
+    private val navController by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +48,8 @@ class PostFragment : Fragment() {
                     commentCountText.text = "${post.commentCount} comments"
                     readStatusText.text = if (post.read) "Read" else "Unread"
                     dismissButton.setOnClickListener {
-                        toast("Post with id '${post.id}' dismissed")
+                        viewModel.hide()
+                        navController.navigateUp()
                     }
                 }
             } else {

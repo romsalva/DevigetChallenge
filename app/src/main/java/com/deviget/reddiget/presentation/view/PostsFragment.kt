@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.deviget.reddiget.R
 import com.deviget.reddiget.data.datamodel.Post
-import com.deviget.reddiget.presentation.extension.toast
 import com.deviget.reddiget.presentation.viewmodel.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +20,7 @@ class PostsFragment : Fragment() {
 
     private lateinit var views: Views
     private val navController by lazy { findNavController() }
+    private val viewModel by viewModels<PostsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +37,6 @@ class PostsFragment : Fragment() {
             onPostClicked = { post, _ -> clickPost(post) },
             onPostDismissed = { post, _ -> dismissPost(post) }
         )
-        val viewModel by viewModels<PostsViewModel>()
 
         views.list.adapter = adapter
         views.list.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
@@ -62,7 +61,7 @@ class PostsFragment : Fragment() {
     }
 
     private fun dismissPost(post: Post) {
-        toast("Post with id '${post.id}' dismissed")
+        viewModel.hide(post)
     }
 
     private class Views(

@@ -26,4 +26,8 @@ class PostViewModel @ViewModelInject constructor(
         postId.value = id
     }
 
+    fun hide() {
+        postId.value?.let { repository.setHidden(it, true) }
+    }
+
 }

@@ -29,6 +29,10 @@ class PostsViewModel @ViewModelInject constructor(
         resource.status.map { it == PagedResource.Status.Loading }
     }
 
+    fun hide(post: Post) {
+        repository.setHidden(post.id, true)
+    }
+
     fun refresh() {
         refreshSignal.value = RefreshSignal.Forced
     }
