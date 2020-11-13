@@ -1,39 +1,37 @@
 package com.deviget.reddiget.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import com.deviget.reddiget.data.DataResult
 import com.deviget.reddiget.data.datamodel.Post
+import com.deviget.reddiget.data.room.dao.PostsDao
 import com.deviget.reddiget.data.webservice.RedditWebservice
-
-private var latest: List<Post>? = null
-//TODO: replace this with actual persistences
 
 /**
  * This layer acts as the single source of truth for Posts.
  * It combines local storage and network calls into a unified data stream.
  */
 class PostsRepository(
+    private val dao: PostsDao,
     private val webservice: RedditWebservice
 ) {
 
     fun topPosts(): LiveData<Resource<List<Post>>> = liveData {
-        emit(Resource.Loading(latest))
-        val result = webservice.top()
-        emit(
-            when (result) {
-                is DataResult.Success -> {
-                    latest = result.data
-                    Resource.Success(result.data)
-                }
-                is DataResult.Failure -> Resource.Error(result.throwable)
+        val allPosts = dao.allPosts()
+        emitSource(allPosts.asLiveData().map { Resource.Loading(it) })
+        when (val result = webservice.top()) {
+            is DataResult.Success -> {
+                dao.insert(result.data)
+                emitSource(allPosts.asLiveData().map { Resource.Success(it) })
             }
-        )
+            is DataResult.Failure -> emit(Resource.Error<List<Post>>(result.throwable))
+        }
     }
 
     fun postById(id: String): LiveData<Resource<Post>> = liveData {
-        emit(Resource.Loading())
-        latest.orEmpty().find { it.id == id }
-        emit(Resource.Success(latest.orEmpty().find { it.id == id }))
+        val post = dao.postById(id)
+        emitSource(post.asLiveData().map { Resource.Success(it) })
     }
 }

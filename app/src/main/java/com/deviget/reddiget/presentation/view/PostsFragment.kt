@@ -36,7 +36,7 @@ class PostsFragment : Fragment() {
             onPostClicked = { post, _ -> clickPost(post) },
             onPostDismissed = { post, _ -> dismissPost(post) }
         )
-        val viewModel by viewModels<PostsViewModel> { ViewModelFactory() }
+        val viewModel by viewModels<PostsViewModel> { ViewModelFactory(view.context) }
 
         views.list.adapter = adapter
         views.list.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))

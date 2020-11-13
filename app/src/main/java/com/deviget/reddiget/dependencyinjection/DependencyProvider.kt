@@ -1,7 +1,9 @@
 package com.deviget.reddiget.dependencyinjection
 
+import android.content.Context
 import com.deviget.reddiget.Configuration
 import com.deviget.reddiget.data.repository.PostsRepository
+import com.deviget.reddiget.data.room.database.PostsRoomDatabase
 import com.deviget.reddiget.data.webservice.RedditWebservice
 import com.deviget.reddiget.data.webservice.retrofit.RedditService
 import com.deviget.reddiget.presentation.viewmodel.PostViewModel
@@ -15,6 +17,13 @@ import retrofit2.create
  * This should be easily replaceable by a robust framework such as Hilt or Koin
  */
 object DependencyProvider {
+
+    private lateinit var postsRoomDatabase: PostsRoomDatabase
+
+    fun init(context: Context) {
+        postsRoomDatabase = PostsRoomDatabase.getDatabase(context)
+    }
+
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(Configuration.redditUri.toString())
@@ -24,7 +33,7 @@ object DependencyProvider {
     private val retrofitService = retrofit.create<RedditService>()
 
     fun redditWebservice() = RedditWebservice(retrofitService)
-    fun postsRepository() = PostsRepository(redditWebservice())
+    fun postsRepository() = PostsRepository(postsRoomDatabase.postsDao(), redditWebservice())
     fun postsViewModel() = PostsViewModel(postsRepository())
     fun postViewModel() = PostViewModel(postsRepository())
 }

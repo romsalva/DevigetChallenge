@@ -32,7 +32,7 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views = Views(view)
-        val viewModel by viewModels<PostViewModel> { ViewModelFactory() }
+        val viewModel by viewModels<PostViewModel> { ViewModelFactory(view.context) }
         viewModel.post.observe(viewLifecycleOwner) { post ->
             if (post != null) {
                 views.apply {
