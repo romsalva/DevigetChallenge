@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.bumptech.glide.Glide
 import com.deviget.reddiget.R
 import com.deviget.reddiget.data.datamodel.Post
 
@@ -25,19 +24,8 @@ class PostsAdapter(
             onDismiss = { position -> getItem(position)?.let { onPostDismissed(it, position) } }
         )
 
-    //TODO: hardcoded strings will be fixed when the final UI is implemented
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        val item = getItem(position)
-        if (item != null) {
-            holder.titleText.text = item.title
-            holder.authorText.text = item.author
-            holder.dateText.text = item.formattedDate()
-            holder.commentCountText.text = "${item.commentCount} comments"
-            holder.readStatusText.text = if (item.read) "Read" else "Unread"
-            item.thumbnail?.let { uri ->
-                Glide.with(holder.itemView).load(uri).into(holder.image)
-            }
-        }
+        getItem(position)?.let { holder.bind(it) }
     }
 
 }

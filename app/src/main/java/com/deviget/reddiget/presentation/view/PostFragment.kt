@@ -74,7 +74,7 @@ class PostFragment : Fragment() {
     ) {
         constructor(view: View) : this(
             view.findViewById(R.id.text_title),
-            view.findViewById(R.id.image),
+            view.findViewById(R.id.image_thumbnail),
             view.findViewById(R.id.text_author),
             view.findViewById(R.id.text_date),
             view.findViewById(R.id.text_comment_count),

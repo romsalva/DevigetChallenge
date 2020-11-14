@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,52 +10,102 @@
     >
 
     <TextView
-        android:id="@+id/text_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Title"
-        />
-
-    <TextView
         android:id="@+id/text_author"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_widget_small"
+        android:ellipsize="end"
+        android:gravity="bottom"
+        android:maxLines="1"
+        android:paddingStart="@dimen/spacing_medium"
+        android:paddingTop="@dimen/spacing_small"
+        android:paddingEnd="@dimen/spacing_medium"
+        android:paddingBottom="0dp"
+        app:layout_constraintEnd_toStartOf="@id/image_read_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="u/someuser"
         />
 
-    <TextView
-        android:id="@+id/text_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="5 hours ago"
+
+    <ImageView
+        android:id="@+id/image_read_status"
+        android:layout_width="@dimen/size_widget_small"
+        android:layout_height="@dimen/size_widget_small"
+        android:padding="@dimen/spacing_medium"
+        android:src="@drawable/ic_read_24"
+        app:layout_constraintEnd_toStartOf="@id/text_comment_count"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Read"
         />
 
     <TextView
         android:id="@+id/text_comment_count"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="99 comments"
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_widget_small"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        app:drawableStartCompat="@drawable/ic_comment_24"
+        app:layout_constraintEnd_toStartOf="@id/button_dismiss"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="99"
+        />
+
+    <ImageButton
+        android:id="@+id/button_dismiss"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="@dimen/size_widget_small"
+        android:layout_height="@dimen/size_widget_small"
+        android:src="@drawable/ic_dismiss_24"
+        android:text="@string/dismiss"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         />
 
     <TextView
-        android:id="@+id/text_read_status"
-        android:layout_width="match_parent"
+        android:id="@+id/text_title"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="Read"
+        android:paddingStart="@dimen/spacing_medium"
+        android:paddingTop="0dp"
+        android:paddingEnd="@dimen/spacing_medium"
+        android:paddingBottom="@dimen/spacing_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/image_thumbnail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_author"
+        app:layout_constraintVertical_bias="0"
+        tools:text="Title"
         />
+
 
     <ImageView
-        android:id="@+id/image"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:contentDescription="TODO"
-        />
-
-    <Button
-        android:id="@+id/button_dismiss"
-        android:layout_width="wrap_content"
+        android:id="@+id/image_thumbnail"
+        android:layout_width="@dimen/thumbnail_size"
         android:layout_height="wrap_content"
-        android:text="@string/dismiss"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toTopOf="@id/text_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_dismiss"
+        app:layout_constraintVertical_bias="0"
+        tools:layout_height="@dimen/thumbnail_size"
         />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/text_date"
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="@dimen/spacing_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/image_thumbnail"
+        app:layout_constraintVertical_bias="1"
+        tools:text="5 hours ago"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

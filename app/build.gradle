@@ -57,6 +57,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
