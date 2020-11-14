@@ -33,6 +33,14 @@ class PostsViewModel @ViewModelInject constructor(
         repository.setHidden(post.id, true)
     }
 
+    fun hideAll() {
+        posts.value?.snapshot().orEmpty().map { it.id }.let { posts ->
+            if (posts.isNotEmpty()) {
+                repository.setHidden(posts, true)
+            }
+        }
+    }
+
     fun refresh() {
         refreshSignal.value = RefreshSignal.Forced
     }

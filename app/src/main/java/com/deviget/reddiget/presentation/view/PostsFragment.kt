@@ -1,9 +1,7 @@
 package com.deviget.reddiget.presentation.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,6 +19,11 @@ class PostsFragment : Fragment() {
     private lateinit var views: Views
     private val navController by lazy { findNavController() }
     private val viewModel by viewModels<PostsViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +58,18 @@ class PostsFragment : Fragment() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.posts, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.menu_dismiss_all -> {
+            dismissAll()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
     private fun clickPost(post: Post) {
         val action = PostsFragmentDirections.actionPostsFragmentToPostFragment(post.id)
         navController.navigate(action)
@@ -62,6 +77,10 @@ class PostsFragment : Fragment() {
 
     private fun dismissPost(post: Post) {
         viewModel.hide(post)
+    }
+
+    private fun dismissAll() {
+        viewModel.hideAll()
     }
 
     private class Views(

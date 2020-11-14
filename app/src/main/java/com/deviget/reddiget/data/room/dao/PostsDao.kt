@@ -26,6 +26,9 @@ interface PostsDao {
     @Query("UPDATE post SET hidden = :hidden WHERE id = :id")
     suspend fun setHidden(id: String, hidden: Boolean)
 
+    @Query("UPDATE post SET hidden = :hidden WHERE id IN (:ids)")
+    suspend fun setHidden(ids: List<String>, hidden: Boolean)
+
     @Query("DELETE FROM post")
     suspend fun deleteAllPosts()
 

@@ -9,7 +9,7 @@ object Configuration {
 
     val pagingConfig = PagingConfig(
         pageSize = 10,
-        prefetchDistance = 20,
+        prefetchDistance = 5,
         enablePlaceholders = false,
         initialLoadSizeHint = 10
     )
