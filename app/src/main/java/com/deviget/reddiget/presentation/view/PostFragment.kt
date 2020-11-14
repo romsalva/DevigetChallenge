@@ -14,6 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.deviget.reddiget.R
+import com.deviget.reddiget.presentation.util.formattedDate
+import com.deviget.reddiget.presentation.util.formattedUsername
 import com.deviget.reddiget.presentation.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,7 +46,7 @@ class PostFragment : Fragment() {
                         Glide.with(view.context).load(uri).into(image)
                     }
                     image.isVisible = post.link != null
-                    authorText.text = post.author
+                    authorText.text = post.formattedUsername(view.context)
                     dateText.text = post.formattedDate()
                     commentCountText.text = "${post.commentCount}"
                     readStatusImage.isVisible = post.read

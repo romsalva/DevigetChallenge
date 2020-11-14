@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.deviget.reddiget.R
 import com.deviget.reddiget.data.datamodel.Post
+import com.deviget.reddiget.presentation.util.formattedDate
+import com.deviget.reddiget.presentation.util.formattedUsername
 
 class PostViewHolder(
     itemView: View,
@@ -25,7 +27,7 @@ class PostViewHolder(
 
     fun bind(post: Post) {
         titleText.text = post.title
-        authorText.text = "u/${post.author}"
+        authorText.text = post.formattedUsername(itemView.context)
         dateText.text = post.formattedDate()
         commentCountText.text = "${post.commentCount}"
         readStatusImage.isVisible = post.read

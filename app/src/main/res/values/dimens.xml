@@ -2,6 +2,7 @@
 <resources>
     <dimen name="thumbnail_size">96dp</dimen>
     <dimen name="size_widget_small">48dp</dimen>
-    <dimen name="spacing_medium">8dp</dimen>
     <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
 </resources>

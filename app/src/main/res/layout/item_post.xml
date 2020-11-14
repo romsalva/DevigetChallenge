@@ -10,20 +10,33 @@
     >
 
     <TextView
+        android:id="@+id/text_date"
+        style="@style/TextAppearance.Reddiget.Date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/spacing_large"
+        android:paddingTop="@dimen/spacing_medium"
+        android:paddingEnd="@dimen/spacing_large"
+        app:layout_constraintEnd_toStartOf="@id/barrier_indicators"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="5 hours ago"
+        />
+
+    <TextView
         android:id="@+id/text_author"
         style="@style/TextAppearance.Reddiget.Author"
         android:layout_width="0dp"
-        android:layout_height="@dimen/size_widget_small"
+        android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="bottom"
         android:maxLines="1"
-        android:paddingStart="@dimen/spacing_medium"
-        android:paddingTop="@dimen/spacing_small"
+        android:paddingStart="@dimen/spacing_large"
         android:paddingEnd="@dimen/spacing_medium"
-        android:paddingBottom="0dp"
-        app:layout_constraintEnd_toStartOf="@id/image_read_status"
+        android:paddingBottom="@dimen/spacing_small"
+        app:layout_constraintEnd_toStartOf="@id/barrier_indicators"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_date"
         tools:text="u/someuser"
         />
 
@@ -69,43 +82,45 @@
         style="@style/TextAppearance.Reddiget.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/spacing_medium"
-        android:paddingTop="0dp"
-        android:paddingEnd="@dimen/spacing_medium"
-        android:paddingBottom="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/spacing_large"
+        android:paddingStart="@dimen/spacing_large"
+        android:paddingEnd="@dimen/spacing_large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/image_thumbnail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_author"
+        app:layout_constraintTop_toBottomOf="@id/barrier_horizontal"
         app:layout_constraintVertical_bias="0"
         tools:text="Title"
         />
-
 
     <ImageView
         android:id="@+id/image_thumbnail"
         android:layout_width="@dimen/thumbnail_size"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/spacing_large"
         android:contentDescription="TODO"
-        app:layout_constraintBottom_toTopOf="@id/text_date"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_dismiss"
         app:layout_constraintVertical_bias="0"
         tools:layout_height="@dimen/thumbnail_size"
         />
 
-    <TextView
-        android:id="@+id/text_date"
-        style="@style/TextAppearance.Reddiget.Date"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_indicators"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:padding="@dimen/spacing_small"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/image_thumbnail"
-        app:layout_constraintVertical_bias="1"
-        tools:text="5 hours ago"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="image_read_status,text_comment_count,button_dismiss"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="text_author, image_read_status, text_comment_count, button_dismiss"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
