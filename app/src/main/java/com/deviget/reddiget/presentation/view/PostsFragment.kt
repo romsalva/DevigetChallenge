@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostsFragment : Fragment() {
 
     private lateinit var views: Views
-    private val navController by lazy { findNavController() }
     private val viewModel by viewModels<PostsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,8 +71,14 @@ class PostsFragment : Fragment() {
     }
 
     private fun clickPost(post: Post) {
-        val action = PostsFragmentDirections.actionPostsFragmentToPostFragment(post.id)
-        navController.navigate(action)
+        if (resources.getBoolean(R.bool.side_by_side)) {
+            val navHostFragment = activity?.let {
+                it.supportFragmentManager.findFragmentById(R.id.fragment_container_post) as NavHostFragment
+            }
+            navHostFragment?.navController?.navigate(R.id.destination_post, PostFragmentArgs(post.id).toBundle())
+        } else {
+            findNavController().navigate(PostsFragmentDirections.actionPostsFragmentToPostFragment(post.id))
+        }
     }
 
     private fun dismissPost(post: Post) {

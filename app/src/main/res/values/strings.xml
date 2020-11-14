@@ -2,4 +2,6 @@
     <string name="app_name">Reddiget</string>
     <string name="dismiss">Dismiss</string>
     <string name="dismiss_all">Dismiss All</string>
+    <string name="nav_label_post">Post</string>
+    <string name="nav_label_post_list">Posts</string>
 </resources>

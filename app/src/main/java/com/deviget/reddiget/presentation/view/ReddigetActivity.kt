@@ -31,6 +31,16 @@ class ReddigetActivity : AppCompatActivity() {
             navController,
             appBarConfiguration
         )
+        if (resources.getBoolean(R.bool.side_by_side)) {
+            val currentBackStackEntry = navController.currentBackStackEntry
+            if (currentBackStackEntry != null && currentBackStackEntry.destination.label == getString(R.string.nav_label_post)) {
+                val postNavController = (supportFragmentManager.findFragmentById(R.id.fragment_container_post) as NavHostFragment).navController
+                //Clear backstack in case there was a remaining fragment from a previous rotation.
+                postNavController.popBackStack(R.id.destination_post, true)
+                postNavController.navigate(R.id.destination_post, currentBackStackEntry.arguments)
+                navController.popBackStack()
+            }
+        }
     }
 
     private class Views(
