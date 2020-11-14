@@ -14,8 +14,7 @@ import com.deviget.reddiget.presentation.util.formattedUsername
 
 class PostViewHolder(
     itemView: View,
-    private val onClick: (position: Int) -> Unit,
-    private val onDismiss: (position: Int) -> Unit
+    private val onAction: (position: Int, action: PostAction) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
     private val titleText: TextView = itemView.findViewById(R.id.text_title)
     private val authorText: TextView = itemView.findViewById(R.id.text_author)
@@ -40,12 +39,17 @@ class PostViewHolder(
     init {
         itemView.setOnClickListener {
             if (adapterPosition != RecyclerView.NO_POSITION) {
-                onClick(adapterPosition)
+                onAction(adapterPosition, PostAction.Click)
             }
         }
         dismissButton.setOnClickListener {
             if (adapterPosition != RecyclerView.NO_POSITION) {
-                onDismiss(adapterPosition)
+                onAction(adapterPosition, PostAction.Dismiss)
+            }
+        }
+        thumbnail.setOnClickListener {
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                onAction(adapterPosition, PostAction.ClickThumbnail)
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.deviget.reddiget.presentation.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.deviget.reddiget.R
 import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.presentation.viewmodel.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class PostsFragment : Fragment() {
@@ -37,10 +39,13 @@ class PostsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views = Views(view)
-        val adapter = PostsAdapter(
-            onPostClicked = { post, _ -> clickPost(post) },
-            onPostDismissed = { post, _ -> dismissPost(post) }
-        )
+        val adapter = PostsAdapter { post, _, action ->
+            when (action) {
+                is PostAction.Click -> clickPost(post)
+                is PostAction.Dismiss -> dismissPost(post)
+                is PostAction.ClickThumbnail -> openImage(post)
+            }
+        }
 
         views.list.adapter = adapter
         views.list.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
@@ -88,6 +93,15 @@ class PostsFragment : Fragment() {
 
     private fun dismissPost(post: Post) {
         viewModel.hide(post)
+    }
+
+    private fun openImage(post: Post) {
+        val uri = post.link
+        if (uri != null) {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = uri
+            startActivity(i)
+        }
     }
 
     private fun dismissAll() {

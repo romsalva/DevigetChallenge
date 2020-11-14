@@ -13,15 +13,13 @@ private val diff = object : DiffUtil.ItemCallback<Post>() {
 }
 
 class PostsAdapter(
-    private val onPostClicked: (post: Post, position: Int) -> Unit = { _, _ -> },
-    private val onPostDismissed: (post: Post, position: Int) -> Unit = { _, _ -> }
+    private val onAction: (post: Post, position: Int, action: PostAction) -> Unit
 ) : PagedListAdapter<Post, PostViewHolder>(diff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder =
         PostViewHolder(
             itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false),
-            onClick = { position -> getItem(position)?.let { onPostClicked(it, position) } },
-            onDismiss = { position -> getItem(position)?.let { onPostDismissed(it, position) } }
+            onAction = { position, action -> getItem(position)?.let { onAction(it, position, action) } }
         )
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
