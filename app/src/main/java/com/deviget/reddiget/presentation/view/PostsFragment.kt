@@ -43,7 +43,7 @@ class PostsFragment : Fragment() {
             when (action) {
                 is PostAction.Click -> clickPost(post)
                 is PostAction.Dismiss -> dismissPost(post)
-                is PostAction.ClickThumbnail -> openImage(post)
+                is PostAction.ClickThumbnail -> clickThumbnail(post)
             }
         }
 
@@ -95,9 +95,9 @@ class PostsFragment : Fragment() {
         viewModel.hide(post)
     }
 
-    private fun openImage(post: Post) {
+    private fun clickThumbnail(post: Post) {
         val uri = post.link
-        if (uri != null) {
+        if (post.type == Post.Type.IMAGE && uri != null) {
             val i = Intent(Intent.ACTION_VIEW)
             i.data = uri
             startActivity(i)

@@ -19,6 +19,8 @@ data class JsonLink(
     val createdUtc: Long,
     @SerializedName("thumbnail")
     val thumbnail: String,
+    @SerializedName("post_hint")
+    val postHint: String?,
     @SerializedName("num_comments")
     val numComments: Int,
     @SerializedName("url")

@@ -22,6 +22,7 @@ class PostViewHolder(
     private val commentCountText: TextView = itemView.findViewById(R.id.text_comment_count)
     private val readStatusImage: ImageView = itemView.findViewById(R.id.image_read_status)
     private val thumbnail: ImageView = itemView.findViewById(R.id.image_thumbnail)
+    private val downloadableIcon: ImageView = itemView.findViewById(R.id.icon_downloadable)
     private val dismissButton: ImageButton = itemView.findViewById(R.id.button_dismiss)
 
     fun bind(post: Post) {
@@ -33,6 +34,7 @@ class PostViewHolder(
         post.thumbnail?.let { uri ->
             Glide.with(itemView).load(uri).into(thumbnail)
         }
+        downloadableIcon.isVisible = post.type == Post.Type.IMAGE
         thumbnail.isVisible = post.thumbnail != null
     }
 

@@ -16,6 +16,22 @@ data class Post(
     val commentCount: Int,
     val read: Boolean,
     val hidden: Boolean,
+    val type: Type,
     val text: String?,
     val link: Uri?
-)
+) {
+    enum class Type(val value: Int) {
+        OTHER(-1),
+        IMAGE(0),
+        LINK(1);
+
+        companion object {
+            fun fromValue(value: Int) = when (value) {
+                0 -> IMAGE
+                1 -> LINK
+                else -> OTHER
+            }
+        }
+
+    }
+}
