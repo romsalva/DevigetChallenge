@@ -20,7 +20,10 @@
         <item name="android:minWidth">@dimen/size_widget_small</item>
     </style>
 
+    <style name="Widget.Reddiget.ActionButton" parent="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
     <style name="TextAppearance.Reddiget.Title" parent="TextAppearance.MaterialComponents.Headline5" />
+
     <style name="TextAppearance.Reddiget.Content" parent="TextAppearance.MaterialComponents.Body1" />
 
     <style name="TextAppearance.Reddiget.Author" parent="TextAppearance.MaterialComponents.Subtitle1" />

@@ -1,5 +1,6 @@
 package com.deviget.reddiget.presentation.view
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.deviget.reddiget.R
 import com.deviget.reddiget.data.datamodel.Post
+import com.deviget.reddiget.presentation.extension.toast
 import com.deviget.reddiget.presentation.util.formattedDate
 import com.deviget.reddiget.presentation.util.formattedUsername
 import com.deviget.reddiget.presentation.viewmodel.PostViewModel
@@ -45,6 +47,9 @@ class PostFragment : Fragment() {
                     titleText.text = post.title
                     if (post.type == Post.Type.IMAGE && post.link != null) {
                         Glide.with(view.context).load(post.link).into(image)
+                        downloadButton.setOnClickListener {
+                            downloadImage(post.link)
+                        }
                     } else if (post.link != null) {
                         linkText.text = post.link.toString()
                     }
@@ -60,6 +65,7 @@ class PostFragment : Fragment() {
                         viewModel.hide()
                         navController.navigateUp()
                     }
+                    downloadButton.isVisible = post.type == Post.Type.IMAGE && post.link != null
                 }
             } else {
                 //TODO: add "empty" view to fragment_posts
@@ -71,6 +77,10 @@ class PostFragment : Fragment() {
         }
     }
 
+    private fun downloadImage(uri: Uri) {
+        toast("download $uri")
+    }
+
     private class Views(
         val titleText: TextView,
         val linkText: TextView,
@@ -80,7 +90,8 @@ class PostFragment : Fragment() {
         val dateText: TextView,
         val commentCountText: TextView,
         val readStatusImage: ImageView,
-        val dismissButton: ImageButton
+        val dismissButton: ImageButton,
+        val downloadButton: ImageButton
     ) {
         constructor(view: View) : this(
             view.findViewById(R.id.text_title),
@@ -92,6 +103,7 @@ class PostFragment : Fragment() {
             view.findViewById(R.id.text_comment_count),
             view.findViewById(R.id.image_read_status),
             view.findViewById(R.id.button_dismiss),
+            view.findViewById(R.id.button_download)
         )
     }
 
