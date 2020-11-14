@@ -19,7 +19,7 @@ class PostViewHolder(
     private val authorText: TextView = itemView.findViewById(R.id.text_author)
     private val dateText: TextView = itemView.findViewById(R.id.text_date)
     private val commentCountText: TextView = itemView.findViewById(R.id.text_comment_count)
-    private val readStatusText: ImageView = itemView.findViewById(R.id.image_read_status)
+    private val readStatusImage: ImageView = itemView.findViewById(R.id.image_read_status)
     private val thumbnail: ImageView = itemView.findViewById(R.id.image_thumbnail)
     private val dismissButton: ImageButton = itemView.findViewById(R.id.button_dismiss)
 
@@ -28,7 +28,7 @@ class PostViewHolder(
         authorText.text = "u/${post.author}"
         dateText.text = post.formattedDate()
         commentCountText.text = "${post.commentCount}"
-        readStatusText.isVisible = post.read
+        readStatusImage.isVisible = post.read
         post.thumbnail?.let { uri ->
             Glide.with(itemView).load(uri).into(thumbnail)
         }

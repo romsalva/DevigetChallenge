@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -46,8 +46,8 @@ class PostFragment : Fragment() {
                     image.isVisible = post.link != null
                     authorText.text = post.author
                     dateText.text = post.formattedDate()
-                    commentCountText.text = "${post.commentCount} comments"
-                    readStatusText.text = if (post.read) "Read" else "Unread"
+                    commentCountText.text = "${post.commentCount}"
+                    readStatusImage.isVisible = post.read
                     dismissButton.setOnClickListener {
                         viewModel.hide()
                         navController.navigateUp()
@@ -69,16 +69,16 @@ class PostFragment : Fragment() {
         val authorText: TextView,
         val dateText: TextView,
         val commentCountText: TextView,
-        val readStatusText: TextView,
-        val dismissButton: Button
+        val readStatusImage: ImageView,
+        val dismissButton: ImageButton
     ) {
         constructor(view: View) : this(
             view.findViewById(R.id.text_title),
-            view.findViewById(R.id.image_thumbnail),
+            view.findViewById(R.id.image),
             view.findViewById(R.id.text_author),
             view.findViewById(R.id.text_date),
             view.findViewById(R.id.text_comment_count),
-            view.findViewById(R.id.text_read_status),
+            view.findViewById(R.id.image_read_status),
             view.findViewById(R.id.button_dismiss),
         )
     }
