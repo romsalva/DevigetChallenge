@@ -13,4 +13,19 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+
+    <style name="Widget.Reddiget.Dismiss" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:minHeight">@dimen/size_widget_small</item>
+        <item name="android:minWidth">@dimen/size_widget_small</item>
+    </style>
+
+    <style name="TextAppearance.Reddiget.Title" parent="TextAppearance.MaterialComponents.Headline5" />
+
+    <style name="TextAppearance.Reddiget.Author" parent="TextAppearance.MaterialComponents.Subtitle1" />
+
+    <style name="TextAppearance.Reddiget.CommentCount" parent="TextAppearance.MaterialComponents.Caption" />
+
+    <style name="TextAppearance.Reddiget.Date" parent="TextAppearance.MaterialComponents.Caption" />
+
 </resources>
