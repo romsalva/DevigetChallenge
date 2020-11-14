@@ -8,10 +8,10 @@ object Configuration {
     val redditUri = Uri.Builder().scheme("https").authority("api.reddit.com").build()
 
     val pagingConfig = PagingConfig(
-        pageSize = 10,
+        pageSize = 50,
         prefetchDistance = 5,
         enablePlaceholders = false,
-        initialLoadSizeHint = 10
+        initialLoadSizeHint = 50
     )
 
 }

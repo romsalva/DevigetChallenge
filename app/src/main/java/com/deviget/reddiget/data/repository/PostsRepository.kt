@@ -1,7 +1,9 @@
 package com.deviget.reddiget.data.repository
 
-import androidx.lifecycle.*
-import androidx.paging.ItemKeyedDataSource
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
 import androidx.paging.toLiveData
 import com.deviget.reddiget.Configuration
 import com.deviget.reddiget.data.DataResult
@@ -102,9 +104,9 @@ class PostsRepository @Inject constructor(
         }
     }
 
-    fun setHidden(ids: List<String>, hidden: Boolean) {
+    fun hideAllRead() {
         scope.launch {
-            dao.setHidden(ids, hidden)
+            dao.hideRead()
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -75,7 +76,11 @@ class PostsFragment : Fragment() {
             val navHostFragment = activity?.let {
                 it.supportFragmentManager.findFragmentById(R.id.fragment_container_post) as NavHostFragment
             }
-            navHostFragment?.navController?.navigate(R.id.destination_post, PostFragmentArgs(post.id).toBundle())
+            navHostFragment?.navController?.navigate(
+                R.id.destination_post,
+                PostFragmentArgs(post.id).toBundle(),
+                navOptions { launchSingleTop = true }
+            )
         } else {
             findNavController().navigate(PostsFragmentDirections.actionPostsFragmentToPostFragment(post.id))
         }
@@ -86,7 +91,7 @@ class PostsFragment : Fragment() {
     }
 
     private fun dismissAll() {
-        viewModel.hideAll()
+        viewModel.hideAllRead()
     }
 
     private class Views(

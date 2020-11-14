@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostFragment : Fragment() {
 
     private lateinit var views: Views
+    private val viewModel by viewModels<PostViewModel>()
     private val navController by lazy { findNavController() }
 
     override fun onCreateView(
@@ -34,7 +35,7 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views = Views(view)
-        val viewModel by viewModels<PostViewModel>()
+
         viewModel.post.observe(viewLifecycleOwner) { post ->
             if (post != null) {
                 views.apply {
