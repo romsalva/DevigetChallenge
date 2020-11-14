@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.deviget.reddiget.R
+import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.presentation.util.formattedDate
 import com.deviget.reddiget.presentation.util.formattedUsername
 import com.deviget.reddiget.presentation.viewmodel.PostViewModel
@@ -42,10 +43,15 @@ class PostFragment : Fragment() {
             if (post != null) {
                 views.apply {
                     titleText.text = post.title
-                    post.link?.let { uri ->
-                        Glide.with(view.context).load(uri).into(image)
+                    if (post.type == Post.Type.IMAGE && post.link != null) {
+                        Glide.with(view.context).load(post.link).into(image)
+                    } else if (post.link != null) {
+                        linkText.text = post.link.toString()
                     }
-                    image.isVisible = post.link != null
+                    image.isVisible = post.type == Post.Type.IMAGE
+                    linkText.isVisible = post.type != Post.Type.IMAGE && post.link != null
+                    contentText.text = post.text.orEmpty()
+                    contentText.isVisible = post.text != null
                     authorText.text = post.formattedUsername(view.context)
                     dateText.text = post.formattedDate()
                     commentCountText.text = "${post.commentCount}"
@@ -67,7 +73,9 @@ class PostFragment : Fragment() {
 
     private class Views(
         val titleText: TextView,
+        val linkText: TextView,
         val image: ImageView,
+        val contentText: TextView,
         val authorText: TextView,
         val dateText: TextView,
         val commentCountText: TextView,
@@ -76,7 +84,9 @@ class PostFragment : Fragment() {
     ) {
         constructor(view: View) : this(
             view.findViewById(R.id.text_title),
+            view.findViewById(R.id.text_link),
             view.findViewById(R.id.image),
+            view.findViewById(R.id.text_content),
             view.findViewById(R.id.text_author),
             view.findViewById(R.id.text_date),
             view.findViewById(R.id.text_comment_count),

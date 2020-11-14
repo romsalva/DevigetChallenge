@@ -21,6 +21,7 @@
     </style>
 
     <style name="TextAppearance.Reddiget.Title" parent="TextAppearance.MaterialComponents.Headline5" />
+    <style name="TextAppearance.Reddiget.Content" parent="TextAppearance.MaterialComponents.Body1" />
 
     <style name="TextAppearance.Reddiget.Author" parent="TextAppearance.MaterialComponents.Subtitle1" />
 
