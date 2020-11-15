@@ -28,7 +28,7 @@ class PostViewHolder(
     fun bind(post: Post) {
         titleText.text = post.title
         authorText.text = post.formattedUsername(itemView.context)
-        dateText.text = post.formattedDate()
+        dateText.text = post.formattedDate(itemView.context)
         commentCountText.text = "${post.commentCount}"
         readStatusImage.isVisible = post.read
         post.thumbnail?.let { uri ->

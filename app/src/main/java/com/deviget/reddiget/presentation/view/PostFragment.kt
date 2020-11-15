@@ -69,7 +69,7 @@ class PostFragment : Fragment() {
                     contentText.text = post.text.orEmpty()
                     contentText.isVisible = post.text != null
                     authorText.text = post.formattedUsername(view.context)
-                    dateText.text = post.formattedDate()
+                    dateText.text = post.formattedDate(requireContext())
                     commentCountText.text = "${post.commentCount}"
                     readStatusImage.isVisible = post.read
                     dismissButton.setOnClickListener {
