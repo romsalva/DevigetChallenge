@@ -1,7 +1,10 @@
-package com.deviget.reddiget.data.repository
+package com.deviget.reddiget.data.repository.paging
 
 import androidx.paging.PagedList
 
+/**
+ * Convenience wrapper for [PagedList.BoundaryCallback]
+ */
 class BoundaryCallback<T>(
     private val zeroItemsLoaded: () -> Unit = {},
     private val itemAtFrontLoaded: (item: T) -> Unit = {},

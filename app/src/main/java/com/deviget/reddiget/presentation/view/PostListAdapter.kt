@@ -12,7 +12,12 @@ private val diff = object : DiffUtil.ItemCallback<Post>() {
     override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem == newItem
 }
 
-class PostsAdapter(
+/**
+ * Straightforward PagedListAdapter for our list.
+ * ViewHolder binding is delegated to the ViewHolder itself.
+ * Forwards ViewHolder's actions.
+ */
+class PostListAdapter(
     private val onAction: (post: Post, position: Int, action: PostAction) -> Unit
 ) : PagedListAdapter<Post, PostViewHolder>(diff) {
 

@@ -34,6 +34,9 @@ import dagger.hilt.android.AndroidEntryPoint
 private const val PERMISSIONS_REQUEST_CODE = 1
 private const val WORK_TAG_DOWNLOAD_IMAGE = "work_tag_download_image"
 
+/**
+ * View of a single post
+ */
 @AndroidEntryPoint
 class PostFragment : Fragment() {
 
@@ -59,15 +62,17 @@ class PostFragment : Fragment() {
             if (post != null) {
                 views.apply {
                     titleText.text = post.title
+                    image.isVisible = post.type == Post.Type.IMAGE
                     if (post.type == Post.Type.IMAGE && post.link != null) {
                         Glide.with(view.context).load(post.link).into(image)
+                        //Same as with ViewHolder
+                        image.contentDescription = post.title
                         downloadButton.setOnClickListener {
                             tryDownloadImage()
                         }
                     } else if (post.link != null) {
                         linkText.text = post.link.toString()
                     }
-                    image.isVisible = post.type == Post.Type.IMAGE
                     linkText.isVisible = post.type != Post.Type.IMAGE && post.link != null
                     contentText.text = post.text.orEmpty()
                     contentText.isVisible = post.text != null
@@ -119,7 +124,7 @@ class PostFragment : Fragment() {
     }
 
     /**
-     * This should actually be in a ViewModel, but I'm running out of time.
+     * This should actually be done in a ViewModel, but I'm running out of time.
      */
     private fun downloadImage() {
         viewModel.post.value?.let { post ->
@@ -145,7 +150,7 @@ class PostFragment : Fragment() {
                                     toast(getString(R.string.download_complete))
                                     liveData.removeObserver(this)
                                 }
-                                WorkInfo.State.FAILED -> toast(getString(R.string.generic_error_message))
+                                WorkInfo.State.FAILED -> toast(getString(R.string.generic_error))
                                 else -> Unit
                             }
                         }

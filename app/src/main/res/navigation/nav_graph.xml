@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/destination_post_list"
-        android:name="com.deviget.reddiget.presentation.view.PostsFragment"
+        android:name="com.deviget.reddiget.presentation.view.PostListFragment"
         android:label="@string/nav_label_post_list"
         >
         <action

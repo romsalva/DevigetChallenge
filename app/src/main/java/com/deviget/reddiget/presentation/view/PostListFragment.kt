@@ -2,6 +2,7 @@ package com.deviget.reddiget.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,15 +14,20 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.deviget.reddiget.R
 import com.deviget.reddiget.data.datamodel.Post
-import com.deviget.reddiget.presentation.viewmodel.PostsViewModel
+import com.deviget.reddiget.presentation.extension.toast
+import com.deviget.reddiget.presentation.viewmodel.PostListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val TAG = "PostList"
 
+/**
+ * Our list of posts view
+ */
 @AndroidEntryPoint
-class PostsFragment : Fragment() {
+class PostListFragment : Fragment() {
 
     private lateinit var views: Views
-    private val viewModel by viewModels<PostsViewModel>()
+    private val viewModel by viewModels<PostListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +39,13 @@ class PostsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_posts, container, false)
+        return inflater.inflate(R.layout.fragment_post_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views = Views(view)
-        val adapter = PostsAdapter { post, _, action ->
+        val adapter = PostListAdapter { post, _, action ->
             when (action) {
                 is PostAction.Click -> clickPost(post)
                 is PostAction.Dismiss -> dismissPost(post)
@@ -55,11 +61,18 @@ class PostsFragment : Fragment() {
         }
 
         viewModel.posts.observe(viewLifecycleOwner) { posts ->
-            //TODO: add "empty" view to fragment_posts
             adapter.submitList(posts)
         }
         viewModel.refreshing.observe(viewLifecycleOwner) { refreshing ->
             views.swipeRefresh.isRefreshing = refreshing ?: false
+        }
+        viewModel.error.observe(viewLifecycleOwner) { throwable ->
+            if (throwable != null) {
+                //Definitely not ideal. But again, out of time.
+                //This should populate a UI that drives the user to retry whatever operation failed.
+                toast(getString(R.string.generic_error_check_logs))
+                Log.e(TAG, throwable.message, throwable)
+            }
         }
 
     }
@@ -87,7 +100,7 @@ class PostsFragment : Fragment() {
                 navOptions { launchSingleTop = true }
             )
         } else {
-            findNavController().navigate(PostsFragmentDirections.actionPostsFragmentToPostFragment(post.id))
+            findNavController().navigate(PostListFragmentDirections.actionPostsFragmentToPostFragment(post.id))
         }
     }
 

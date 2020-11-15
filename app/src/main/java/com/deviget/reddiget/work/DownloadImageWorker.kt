@@ -10,7 +10,10 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
+/**
+ * Not happy with this but out of time.
+ * Downloads an image to the pictures folder in background.
+ */
 class DownloadImageWorker(
     appContext: Context,
     workerParams: WorkerParameters

@@ -9,6 +9,9 @@ import androidx.lifecycle.switchMap
 import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.data.repository.PostsRepository
 
+/**
+ * Handles a single post
+ */
 class PostViewModel @ViewModelInject constructor(
     private val repository: PostsRepository
 ) : ViewModel() {
@@ -26,6 +29,7 @@ class PostViewModel @ViewModelInject constructor(
         postId.value = id
     }
 
+    @MainThread
     fun hide() {
         postId.value?.let { repository.setHidden(it, true) }
     }

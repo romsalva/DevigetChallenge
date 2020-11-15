@@ -12,6 +12,9 @@ import com.deviget.reddiget.data.datamodel.Post
 import com.deviget.reddiget.presentation.util.formattedDate
 import com.deviget.reddiget.presentation.util.formattedUsername
 
+/**
+ * The ViewHolder binds to a post and handles callback actions.
+ */
 class PostViewHolder(
     itemView: View,
     private val onAction: (position: Int, action: PostAction) -> Unit
@@ -31,11 +34,14 @@ class PostViewHolder(
         dateText.text = post.formattedDate(itemView.context)
         commentCountText.text = "${post.commentCount}"
         readStatusImage.isVisible = post.read
+        thumbnail.isVisible = post.thumbnail != null
         post.thumbnail?.let { uri ->
             Glide.with(itemView).load(uri).into(thumbnail)
+            //Ideally, I'd put a description specific for this image here.
+            //I think I saw a description field in the json, but I'm out of time.
+            thumbnail.contentDescription = post.title
         }
         downloadableIcon.isVisible = post.type == Post.Type.IMAGE
-        thumbnail.isVisible = post.thumbnail != null
     }
 
     init {

@@ -7,7 +7,13 @@ import com.deviget.reddiget.data.datamodel.Post
 
 private const val YEAR_IN_MILLIS = 1000L * 60L * 60L * 24L * 365L
 
+/**
+ * Formats the post's date as "X time ago, <time>"
+ */
 fun Post.formattedDate(context: Context): String =
     DateUtils.getRelativeDateTimeString(context, date.time, 1000L, YEAR_IN_MILLIS, 0).toString()
 
+/**
+ * Formats the username as u/author
+ */
 fun Post.formattedUsername(context: Context) = context.resources.getString(R.string.post_username_format, author)

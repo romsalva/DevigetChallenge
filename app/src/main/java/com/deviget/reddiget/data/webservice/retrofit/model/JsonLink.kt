@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName
  * I'd normally create a full representation of the endpoint's data,
  * In this case I'll skip it and only put the one's I need here.
  * Otherwise It'll take me a lot of time to check and validate type and nullability for each one.
- * @param
  */
 data class JsonLink(
     @SerializedName("id")

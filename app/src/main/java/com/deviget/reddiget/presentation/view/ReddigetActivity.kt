@@ -3,7 +3,6 @@ package com.deviget.reddiget.presentation.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -11,26 +10,31 @@ import androidx.navigation.ui.setupWithNavController
 import com.deviget.reddiget.R
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Entry point. Can handle a single or dual NavHostFragments
+ */
 @AndroidEntryPoint
 class ReddigetActivity : AppCompatActivity() {
 
-    private lateinit var views: Views
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reddiget)
-        views = Views(this)
-        setSupportActionBar(views.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(navController.graph)
+        //Not sure why, but we need to initialize both the action bar AND the toolbar. Even though they should be the same.
+        //We could probably get away with only the toolbar, but I'll try that some other time.
         setupActionBarWithNavController(
             navController,
             appBarConfiguration
         )
-        views.toolbar.setupWithNavController(
+        toolbar.setupWithNavController(
             navController,
             appBarConfiguration
         )
+        //Move "detail" fragment to the secondary NavHost if there was one at the top
         if (resources.getBoolean(R.bool.side_by_side)) {
             val currentBackStackEntry = navController.currentBackStackEntry
             if (currentBackStackEntry != null && currentBackStackEntry.destination.label == getString(R.string.nav_label_post)) {
@@ -43,13 +47,4 @@ class ReddigetActivity : AppCompatActivity() {
         }
     }
 
-    private class Views(
-        val toolbar: Toolbar,
-        var fragmentContainer: FragmentContainerView
-    ) {
-        constructor(activity: AppCompatActivity) : this(
-            activity.findViewById(R.id.toolbar),
-            activity.findViewById(R.id.fragment_container)
-        )
-    }
 }

@@ -8,6 +8,7 @@ import androidx.paging.toLiveData
 import com.deviget.reddiget.Configuration
 import com.deviget.reddiget.data.DataResult
 import com.deviget.reddiget.data.datamodel.Post
+import com.deviget.reddiget.data.repository.paging.BoundaryCallback
 import com.deviget.reddiget.data.room.dao.PostsDao
 import com.deviget.reddiget.data.webservice.RedditWebservice
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +35,9 @@ class PostsRepository @Inject constructor(
             get() = job + Dispatchers.Main
     }
 
+    /**
+     * Offers posts as streamed pages from network to database
+     */
     fun topPosts(forceRefresh: Boolean = false): PagedResource<Post> {
         val status = MutableLiveData<PagedResource.Status>(PagedResource.Status.Idle)
 
@@ -88,6 +92,10 @@ class PostsRepository @Inject constructor(
         )
     }
 
+    /**
+     * Retrieve a single post from local storage.
+     * Null if it doesn't exist
+     */
     fun postById(id: String): LiveData<Post?> = liveData {
         emitSource(dao.postById(id).asLiveData())
     }

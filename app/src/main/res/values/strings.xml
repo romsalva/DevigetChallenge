@@ -4,11 +4,12 @@
     <string name="dismiss_all">Dismiss All</string>
     <string name="download">Download</string>
     <string name="nav_label_post">Post</string>
-    <string name="nav_label_post_list">Posts</string>
+    <string name="nav_label_post_list">Top</string>
     <string name="post_username_format">u/%1$s</string>
     <string name="cant_download_image">Can\'t download image :(</string>
     <string name="download_complete">Download Complete!</string>
-    <string name="generic_error_message">Something failed :/</string>
+    <string name="generic_error">Something failed :/</string>
+    <string name="generic_error_check_logs">Something\'s wrong. Check Logs.</string>
     <string name="missing_download_link">No link to download</string>
     <string name="nothing_here">Nothing here…</string>
 </resources>
