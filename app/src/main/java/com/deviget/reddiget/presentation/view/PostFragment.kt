@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -53,6 +54,8 @@ class PostFragment : Fragment() {
         views = Views(view)
 
         viewModel.post.observe(viewLifecycleOwner) { post ->
+            views.emptyText.isVisible = post == null
+            views.contentGroup.isVisible = post != null
             if (post != null) {
                 views.apply {
                     titleText.text = post.title
@@ -78,8 +81,6 @@ class PostFragment : Fragment() {
                     }
                     downloadButton.isVisible = post.type == Post.Type.IMAGE && post.link != null
                 }
-            } else {
-                //TODO: add "empty" view to fragment_posts
             }
         }
         if (savedInstanceState == null) {
@@ -158,6 +159,7 @@ class PostFragment : Fragment() {
     }
 
     private class Views(
+        val emptyText: TextView,
         val titleText: TextView,
         val linkText: TextView,
         val image: ImageView,
@@ -167,9 +169,11 @@ class PostFragment : Fragment() {
         val commentCountText: TextView,
         val readStatusImage: ImageView,
         val dismissButton: ImageButton,
-        val downloadButton: ImageButton
+        val downloadButton: ImageButton,
+        val contentGroup: Group
     ) {
         constructor(view: View) : this(
+            view.findViewById(R.id.text_empty),
             view.findViewById(R.id.text_title),
             view.findViewById(R.id.text_link),
             view.findViewById(R.id.image),
@@ -179,7 +183,8 @@ class PostFragment : Fragment() {
             view.findViewById(R.id.text_comment_count),
             view.findViewById(R.id.image_read_status),
             view.findViewById(R.id.button_dismiss),
-            view.findViewById(R.id.button_download)
+            view.findViewById(R.id.button_download),
+            view.findViewById(R.id.group_content)
         )
     }
 

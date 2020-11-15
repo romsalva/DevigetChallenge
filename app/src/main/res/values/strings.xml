@@ -10,4 +10,5 @@
     <string name="download_complete">Download Complete!</string>
     <string name="generic_error_message">Something failed :/</string>
     <string name="missing_download_link">No link to download</string>
+    <string name="nothing_here">Nothing here…</string>
 </resources>

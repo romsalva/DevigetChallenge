@@ -8,6 +8,17 @@
     >
 
     <TextView
+        android:id="@+id/text_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nothing_here"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
         android:id="@+id/text_date"
         style="@style/TextAppearance.Reddiget.Date"
         android:layout_width="0dp"
@@ -150,6 +161,13 @@
                 />
         </LinearLayout>
     </ScrollView>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="text_author, text_date, image_read_status, text_comment_count, button_dismiss, content"
+        />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_indicators"
