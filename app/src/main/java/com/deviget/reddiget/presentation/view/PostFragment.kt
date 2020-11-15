@@ -1,6 +1,7 @@
 package com.deviget.reddiget.presentation.view
 
-import android.net.Uri
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +9,17 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.deviget.reddiget.R
 import com.deviget.reddiget.data.datamodel.Post
@@ -20,7 +27,11 @@ import com.deviget.reddiget.presentation.extension.toast
 import com.deviget.reddiget.presentation.util.formattedDate
 import com.deviget.reddiget.presentation.util.formattedUsername
 import com.deviget.reddiget.presentation.viewmodel.PostViewModel
+import com.deviget.reddiget.work.DownloadImageWorker
 import dagger.hilt.android.AndroidEntryPoint
+
+private const val PERMISSIONS_REQUEST_CODE = 1
+private const val WORK_TAG_DOWNLOAD_IMAGE = "work_tag_download_image"
 
 @AndroidEntryPoint
 class PostFragment : Fragment() {
@@ -48,7 +59,7 @@ class PostFragment : Fragment() {
                     if (post.type == Post.Type.IMAGE && post.link != null) {
                         Glide.with(view.context).load(post.link).into(image)
                         downloadButton.setOnClickListener {
-                            downloadImage(post.link)
+                            tryDownloadImage()
                         }
                     } else if (post.link != null) {
                         linkText.text = post.link.toString()
@@ -77,8 +88,73 @@ class PostFragment : Fragment() {
         }
     }
 
-    private fun downloadImage(uri: Uri) {
-        toast("download $uri")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == PERMISSIONS_REQUEST_CODE) {
+            (permissions.toList() zip grantResults.toList()).toMap().let {
+                if (it[Manifest.permission.READ_EXTERNAL_STORAGE] == PackageManager.PERMISSION_GRANTED &&
+                    it[Manifest.permission.WRITE_EXTERNAL_STORAGE] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    downloadImage()
+                }
+            }
+        }
+    }
+
+    private fun tryDownloadImage() {
+        if (
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ),
+                PERMISSIONS_REQUEST_CODE
+            )
+        } else {
+            downloadImage()
+        }
+    }
+
+    /**
+     * This should actually be in a ViewModel, but I'm running out of time.
+     */
+    private fun downloadImage() {
+        viewModel.post.value?.let { post ->
+            if (post.link != null) {
+                val workManager = WorkManager.getInstance(requireContext())
+                workManager.enqueue(
+                    OneTimeWorkRequestBuilder<DownloadImageWorker>()
+                        .setInputData(
+                            Data.Builder().apply {
+                                putString(DownloadImageWorker.KEY_FILENAME, post.id)
+                                putString(DownloadImageWorker.KEY_URI, post.link.toString())
+                            }.build()
+                        )
+                        .addTag(WORK_TAG_DOWNLOAD_IMAGE)
+                        .build()
+                )
+                val liveData = workManager.getWorkInfosByTagLiveData(WORK_TAG_DOWNLOAD_IMAGE)
+                val observer = object : Observer<List<WorkInfo>> {
+                    override fun onChanged(workInfos: List<WorkInfo>?) {
+                        workInfos?.firstOrNull()?.let {
+                            when (it.state) {
+                                WorkInfo.State.SUCCEEDED -> {
+                                    toast(getString(R.string.download_complete))
+                                    liveData.removeObserver(this)
+                                }
+                                WorkInfo.State.FAILED -> toast(getString(R.string.generic_error_message))
+                                else -> Unit
+                            }
+                        }
+                    }
+                }
+                liveData.observe(viewLifecycleOwner, observer)
+            } else {
+                toast(getString(R.string.missing_download_link))
+            }
+        }
     }
 
     private class Views(
